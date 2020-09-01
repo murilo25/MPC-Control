@@ -12,7 +12,7 @@ using Eigen::VectorXd;
  * TODO: Set N and dt
  */
 
-// assuming horizon period equals to 2s
+// assuming horizon period equals to 1s
 size_t N = 10;//10;
 double dt = 0.25;//0.3;
 

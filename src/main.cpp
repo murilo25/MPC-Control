@@ -87,11 +87,11 @@ int main() {
 
 			double cte = polyeval(coeffs, 0);
 
-			double epsi = psi - atan(coeffs[1] + 2*px*coeffs[2] + 3*px*px*coeffs[3]);
+			//double epsi = psi - atan(coeffs[1] + 2*px*coeffs[2] + 3*px*px*coeffs[3]);
 
-			//double epsi = -atan(coeffs[1]);
+			double epsi = -atan(coeffs[1]);
 
-			const double dt = 0.25; // latency for predicting time during actuation
+			const double dt = 0.25; // latency for predicting time during actuation based on MPC.cpp
 			const double Lf = 2.67;
 
 			//predict future states after latency period
