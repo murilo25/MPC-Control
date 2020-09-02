@@ -14,7 +14,7 @@ using Eigen::VectorXd;
 
 // assuming horizon period equals to 1s
 size_t N = 10;//10;
-double dt = 0.25;//0.3;
+double dt = 0.1;//0.25;
 
 // This value assumes the model presented in the classroom is used.
 //
@@ -66,12 +66,12 @@ class FG_eval {
      */
      
     // weights for cost objectives
-    const double cte_weight = 2*2000;
-    const double epsi_weight = 2*2000;
-    const double v_weight = 100;
-    const double actuator_weight = 10;
-    const double change_steer_weight = 100000;
-    const double change_acc_weight = 10000;
+    const double cte_weight = 1000;//400;
+    const double epsi_weight = 1000;//400;
+    const double v_weight = 10;
+    const double actuator_weight = 50;//1;
+    const double change_steer_weight = 250000;//100000;
+    const double change_acc_weight = 5000;//10000;
 
     // cost based on current state
     for (int t = 0; t < N; ++t){

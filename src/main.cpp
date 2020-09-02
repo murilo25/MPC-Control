@@ -91,7 +91,7 @@ int main() {
 
 			double epsi = -atan(coeffs[1]);
 
-			const double dt = 0.25; // latency for predicting time during actuation based on MPC.cpp
+			const double dt = 0.1;//0.1; // latency for predicting time during actuation based on MPC.cpp
 			const double Lf = 2.67;
 
 			//predict future states after latency period
@@ -105,6 +105,7 @@ int main() {
 			double pred_v = v + a*dt;
 			double pred_cte = cte + v*sin(epsi)*dt;
 			double pred_epsi = epsi - v*(delta/Lf)*dt;
+			//double pred_epsi = epsi - v*(atan(coeffs[1])/Lf)*dt;
 
 			Eigen::VectorXd state(6);
 			state << pred_px, pred_py, pred_psi, pred_v, pred_cte, pred_epsi;
