@@ -8,9 +8,6 @@
 using CppAD::AD;
 using Eigen::VectorXd;
 
-/**
- * TODO: Set N and dt
- */
 
 // assuming horizon period equals to 1s
 size_t N = 10;//10;
@@ -59,11 +56,7 @@ class FG_eval {
     // Any additions to the cost should be added to `fg[0]`.
     fg[0] = 0;
 
-    // Reference State Cost
-    /**
-     * TODO: Define the cost related the reference state and
-     *   anything you think may be beneficial.
-     */
+    // Define variables related to cost and reference state 
      
     // weights for cost objectives
     const double cte_weight = 1000;//400;
@@ -73,7 +66,7 @@ class FG_eval {
     const double change_steer_weight = 0.5*250000;//100000;
     const double change_acc_weight = 5000;//10000;
 
-    // cost based on current state
+    // minimize errors (cte, heading and velocity)
     for (int t = 0; t < N; ++t){
 	fg[0] += cte_weight * CppAD::pow(vars[cte_start + t],2);
 	fg[0] += epsi_weight * CppAD::pow(vars[epsi_start + t],2);
@@ -110,10 +103,7 @@ class FG_eval {
 
     // The rest of the constraints
     for (int t = 1; t < N; ++t) {
-      /**
-       * TODO: Grab the rest of the states at t+1 and t.
-       *   We have given you parts of these states below.
-       */
+      // Grab the rest of the states at t+1 and t.
       AD<double> x1 = vars[x_start + t];
       AD<double> y1 = vars[y_start + t];
       AD<double> psi1 = vars[psi_start + t];
@@ -135,18 +125,15 @@ class FG_eval {
 
       AD<double> f0 = coeffs[0] + coeffs[1] * x0 + coeffs[2] * x0 * x0 + coeffs[3] * x0 * x0 * x0;
 
-      // Here's `x` to get you started.
+      AD<double> psides0 = CppAD::atan(coeffs[1] * 2 * coeffs[2]*x0 +3*coeffs[3]*x0*x0);	// arctan(df(xt)/dt): f(xt) = coeffs[0] + coeffs[1]*x + coeffs[2]*x^2 + coeffs[3]*x^3 -> df/dt = coeffs[1] + 2*coeffs[2]*x + 3*coeffs[3]*x^2
+
       // The idea here is to constraint this value to be 0.
       //
       // NOTE: The use of `AD<double>` and use of `CppAD`!
       // CppAD can compute derivatives and pass these to the solver.
 
-      /**
-       * TODO: Setup the rest of the model constraints
-       */
+      // Setup the rest of the model constraints
 
-      AD<double> psides0 = CppAD::atan(coeffs[1] * 2 * coeffs[2]*x0 +3*coeffs[3]*x0*x0);	// arctan(df(xt)/dt): f(xt) = coeffs[0] + coeffs[1]*x + coeffs[2]*x^2 + coeffs[3]*x^3 -> df/dt = coeffs[1] + 2*coeffs[2]*x + 3*coeffs[3]*x^2
-      
       fg[1 + x_start + t] = x1 - (x0 + v0 * CppAD::cos(psi0) * dt);
       fg[1 + y_start + t] = y1 - (y0 + v0 * CppAD::sin(psi0) * dt);
       fg[1 + psi_start + t] = psi1 - (psi0 - (v0/Lf) * delta0 * dt);
@@ -188,15 +175,6 @@ std::vector<double> MPC::Solve(const VectorXd &x0, const VectorXd &coeffs) {
   for (int i = 0; i < n_vars; ++i) {
     vars[i] = 0.0;
   }
-  // Set the initial variable values
-/*
-  vars[x_start] = x;
-  vars[y_start] = y;
-  vars[psi_start] = psi;
-  vars[v_start] = v;
-  vars[cte_start] = cte;
-  vars[epsi_start] = epsi;
-*/
 
   // Lower and upper limits for x
   Dvector vars_lowerbound(n_vars);

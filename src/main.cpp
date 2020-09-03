@@ -67,8 +67,8 @@ int main() {
 			double delta = j[1]["steering_angle"];
 			double a = j[1]["throttle"];
 
-			// rotation and translation to change reference system to be centered at origin and 0 degrees
-			for (size_t i = 0; i < ptsx.size(); ++i){
+			// rotation and translation to change reference system from map frame to vehicle frame (vehicle centered at origin and 0 degrees)
+			for (size_t i = 0; i < ptsx.size(); ++i){ // for each pair of coordinate in map frame
 				double shift_x = ptsx[i] - px; 
 				double shift_y = ptsy[i] - py;
 
@@ -97,9 +97,9 @@ int main() {
 			//predict future states after latency period
 
 			//double pred_px = px + v*cos(psi)*dt;
-			double pred_px = 0 + v*dt;// px = 0 in the new reference system
+			double pred_px = 0 + v*dt;// px = 0 and cos(psi) = 1 in the new reference system
 			//double pred_py = py + v*sin(psi)*dt;
-			double pred_py = 0; // py = 0 in the new reference system
+			double pred_py = 0; // py = 0  and cos(psi) = 0 in the new reference system
 			//double pred_psi = psi + v*(-delta/Lf)*dt; 
 			double pred_psi = 0 - v*(delta/Lf)*dt;	// psi = 0 in the new reference system
 			double pred_v = v + a*dt;
