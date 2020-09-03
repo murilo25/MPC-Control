@@ -68,9 +68,9 @@ class FG_eval {
     // weights for cost objectives
     const double cte_weight = 1000;//400;
     const double epsi_weight = 1000;//400;
-    const double v_weight = 10;
+    const double v_weight = 0.8*10;
     const double actuator_weight = 50;//1;
-    const double change_steer_weight = 250000;//100000;
+    const double change_steer_weight = 0.5*250000;//100000;
     const double change_acc_weight = 5000;//10000;
 
     // cost based on current state
